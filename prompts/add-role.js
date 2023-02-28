@@ -12,9 +12,9 @@ const addRoleQuestion = [
     {
         type: "list",
         message: "Enter the department for this role",
-        choices: [ // function to collect options from db 
-            ],
+        choices: "departments",
         name: 'newRole'
     }];
 
     module.exports = addRoleQuestion
+
