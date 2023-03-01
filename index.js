@@ -52,6 +52,9 @@ function initialQ() {
                         // })
                     break;
 
+                case "Quit":
+                    break;
+
                 // case "Add an Employee":
                 //     inquirer.prompt(addEmployeeQuestion)
                 //     break;
@@ -103,7 +106,7 @@ VALUES ('${answer.newDepartment}')`, (err)=> {
 };
 
 function addRole(answer) {
-    db.query(`INSERT INTO role (title, salary, department_id) VALUES ('${answer.newRole}', ${answer.newSalary}, ${answer.department_id})`, (err)=> {
+    db.query(`INSERT INTO role (title, salary, department_id) VALUES ('${answer.role}', ${answer.salary}, ${answer.department})`, (err)=> {
         if (err) {
             console.log(err);
         }
@@ -128,18 +131,18 @@ function departmentChoice() {
             {
                 type: "Input",
                 message: "Enter the role you would like to add",
-                name: 'newRole'
+                name: 'role'
             },
             {
                 type: "Input",
                 message: "Enter the salary for this role",
-                name: 'newSalary'
+                name: 'salary'
             },
             {
                 type: "list",
                 message: "Enter the department for this role",
                 choices: departments,
-                name: 'newRole'
+                name: 'department'
             }]
         )
         .then(roleAns => {
@@ -148,7 +151,7 @@ function departmentChoice() {
     })
 }
 
-    
+// departmentChoice();   
 
 
 // console.log(departmentList());
