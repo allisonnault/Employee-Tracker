@@ -26,3 +26,6 @@ INSERT INTO employee (first_name, last_name, role_id, manager_id)
         ('Maxx', 'Luck', 6, 7),
         ('Adam', 'Hanson', 4, 1);
 
+
+SELECT id FROM role 
+WHERE title in ("Belay Staff", "Youth Programs Manager");

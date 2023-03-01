@@ -2,7 +2,6 @@ const inquirer = require('inquirer');
 const fs = require('fs');
 const cTable = require('console.table');
 const { initialQuestion, addDepartmentQuestion } = require('./prompts/question');
-const addEmployeeQuestion = require('./prompts/add-employee');
 const mysql = require('mysql2');
 
 const db = mysql.createConnection(
@@ -104,25 +103,46 @@ VALUES ('${answer.newDepartment}')`, (err)=> {
 };
 
 function addRole(answer) {
-    db.query(`INSERT INTO role (title, salary, department_id) VALUES ('${answer.role}', ${answer.salary}, ${answer.department})`, (err)=> {
+   let departmentId; 
+   let salary = parseFloat(answer.salary);
+    db.query(`Select id from department where name = '${answer.department}'`, (err, result)=> {
         if (err) {
             console.log(err);
         }
-        console.log(`${answer.newRole} had been added`);
-        viewRoles();
-        initialQ();
-    })
+        departmentId = result[0].id
+        db.query(`INSERT INTO role (title, salary, department_id) VALUES ('${answer.role}', ${salary}, ${departmentId})`, (err)=> {
+            if (err) {
+                console.log(err);
+            }
+            console.log(`${answer.role} had been added to employee_db!`);
+            viewRoles();
+            initialQ();
+        })
+    });
+    
 }
 
 function addEmployee(answer) {
-    db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ('${answer.employeeFirstName}', ${answer.employeeLastName}, ${answer.EmployeeRole}, ${answer.employeeManager})`, (err)=> {
+    let roleID;
+    let managerID;
+    db.query(`SELECT id from role where title in ('${answer.EmployeeRole}', '${answer.employeeManager}')`, (err, result)=>{
         if (err) {
             console.log(err);
         }
-        console.log(`${answer.employeeFirstName} had been added`);
-        viewEmployees();
-        initialQ();
+        roleID = result[0].id;
+        managerID = result[1].id;
+        db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ('${answer.employeeFirstName}', '${answer.employeeLastName}', ${roleID}, ${managerID})`, (err)=> {
+            if (err) {
+                console.log(err);
+            }
+            console.log(`${answer.employeeFirstName} had been added`);
+            viewEmployees();
+            initialQ();
+        })
     })
+    
+    
+  
 }
 
 function departmentChoice() {
@@ -154,8 +174,8 @@ function departmentChoice() {
             }]
         )
         .then(roleAns => {
-            console.log(roleAns);
-            // addRole(roleAns);
+            // console.log(roleAns);
+            addRole(roleAns);
         })
     })
 }
@@ -206,8 +226,9 @@ function employeeRoleAndManager() {
     ]) 
     .then(employeeAns => {
         console.log(employeeAns);
-        // addEmployee(employeeAns);
+        addEmployee(employeeAns);
     })
 }
 
 
+employeeRoleAndManager()
