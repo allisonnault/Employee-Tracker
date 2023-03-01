@@ -27,5 +27,5 @@ INSERT INTO employee (first_name, last_name, role_id, manager_id)
         ('Adam', 'Hanson', 4, 1);
 
 
-SELECT id FROM role 
-WHERE title in ("Belay Staff", "Youth Programs Manager");
+UPDATE employee SET role_id = 4
+WHERE first_name = 'Adam' AND last_name = 'Hanson';
