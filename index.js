@@ -48,14 +48,14 @@ function initialQ() {
                     break;
 
                 case "Add an Employee":
+                    employeeRoleAndManager();
+                    break;
 
+                case "Update an Employee Role":
+                    
 
                 case "Quit":
                     break;
-
-                // case "Add an Employee":
-                //     inquirer.prompt(addEmployeeQuestion)
-                //     break;
 
             } 
         })
@@ -114,6 +114,16 @@ function addRole(answer) {
     })
 }
 
+function addEmployee(answer) {
+    db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ('${answer.employeeFirstName}', ${answer.employeeLastName}, ${answer.EmployeeRole}, ${answer.employeeManager})`, (err)=> {
+        if (err) {
+            console.log(err);
+        }
+        console.log(`${answer.employeeFirstName} had been added`);
+        viewEmployees();
+        initialQ();
+    })
+}
 
 function departmentChoice() {
     let departments = [];
@@ -145,11 +155,12 @@ function departmentChoice() {
         )
         .then(roleAns => {
             console.log(roleAns);
+            // addRole(roleAns);
         })
     })
 }
 
-function employeeRoleandManager() {
+function employeeRoleAndManager() {
     let roles = [];
     db.query('SELECT title FROM role', (err, result) => {
         if (err) {
@@ -195,7 +206,8 @@ function employeeRoleandManager() {
     ]) 
     .then(employeeAns => {
         console.log(employeeAns);
+        // addEmployee(employeeAns);
     })
 }
 
-employeeRoleandManager();
+
