@@ -6,7 +6,7 @@ VALUES ('MGMT'),
         ('Climbing and Fitness'),
         ('Route Setting');
        
-
+INSERT INTO role (title, salary, department_id)
 VALUES ("Operations Manager", 65000, 001),
         ("Community Advisor", 20, 002),
         ("Belay Staff", 16.40, 003),

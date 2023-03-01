@@ -19,7 +19,7 @@ function init() {
     initialQ()
 }
 
-// init()
+init()
 
 function initialQ() {
     inquirer.prompt(initialQuestion)
@@ -45,8 +45,8 @@ function initialQ() {
                     break;
 
                 case "Add a Role":
-                    departmentList();
-                    inquirer.prompt(addRoleQuestion)
+                    // call on dept list
+                    departmentChoice()
                         // .then(roleAns => {
                         //     addRole(roleAns);
                         // })
@@ -66,6 +66,7 @@ function viewDepartments() {
             console.log(err);
         }
         console.table(result);
+        initialQ();
     })
 }
 
@@ -75,7 +76,7 @@ function viewEmployees() {
             console.log(err);
         }
         console.table(result);
-        
+        initialQ();
     })
 };
 
@@ -85,6 +86,7 @@ function viewRoles() {
             console.log(err);
         }
         console.table(result);
+        initialQ();
     })
 };
 
@@ -95,37 +97,61 @@ VALUES ('${answer.newDepartment}')`, (err)=> {
         console.log(err);
     }
     console.log(`${answer.newDepartment} had been added`);
+    viewDepartments();
+    initialQ();
 })
 };
 
-function departmentList(){
+function addRole(answer) {
+    db.query(`INSERT INTO role (title, salary, department_id) VALUES ('${answer.newRole}', ${answer.newSalary}, ${answer.department_id})`, (err)=> {
+        if (err) {
+            console.log(err);
+        }
+        console.log(`${answer.newRole} had been added`);
+        viewRoles();
+        initialQ();
+    })
+}
+
+
+function departmentChoice() {
     let departments = [];
     db.query('SELECT name from department', (err, result) => {
         if (err) {
             console.log(err);
         }
         for (let i = 0; i < result.length; i++) {
-        departments.push(result[i].name)
+            departments.push(result[i].name)
         }
-        const list = JSON.stringify(departments)
-       fs.writeFile('./db/department_list.json', list, (err) =>
-       err
-        ? console.error(err)
-        :console.log(""))
+        // console.log(departments);
+        inquirer.prompt([
+            {
+                type: "Input",
+                message: "Enter the role you would like to add",
+                name: 'newRole'
+            },
+            {
+                type: "Input",
+                message: "Enter the salary for this role",
+                name: 'newSalary'
+            },
+            {
+                type: "list",
+                message: "Enter the department for this role",
+                choices: departments,
+                name: 'newRole'
+            }]
+        )
+        .then(roleAns => {
+            console.log(roleAns);
+        })
     })
 }
 
-// function departmentList(){
-//     db.query('SELECT name from department', (err, result) => {
-//         if (err) {
-//             console.log(err);
-//         }
-//        let departments = result;
-//        return departments;
-//     })
-// }
+    
 
-console.log(departmentList());
+
+// console.log(departmentList());
 
 // function addRole() {}
 
