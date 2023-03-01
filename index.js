@@ -3,7 +3,6 @@ const fs = require('fs');
 const cTable = require('console.table');
 const { initialQuestion, addDepartmentQuestion } = require('./prompts/question');
 const addEmployeeQuestion = require('./prompts/add-employee');
-const addRoleQuestion = require('./prompts/add-role');
 const mysql = require('mysql2');
 
 const db = mysql.createConnection(
@@ -19,7 +18,7 @@ function init() {
     initialQ()
 }
 
-init()
+// init()
 
 function initialQ() {
     inquirer.prompt(initialQuestion)
@@ -45,12 +44,11 @@ function initialQ() {
                     break;
 
                 case "Add a Role":
-                    // call on dept list
-                    departmentChoice()
-                        // .then(roleAns => {
-                        //     addRole(roleAns);
-                        // })
+                    departmentChoice();
                     break;
+
+                case "Add an Employee":
+
 
                 case "Quit":
                     break;
@@ -151,10 +149,53 @@ function departmentChoice() {
     })
 }
 
-// departmentChoice();   
+function employeeRoleandManager() {
+    let roles = [];
+    db.query('SELECT title FROM role', (err, result) => {
+        if (err) {
+            console.log(err);
+        }
+        for (let i = 0; i < result.length; i++) {
+            roles.push(result[i].title)
+        }
+    })
+    let managers = [];
+    db.query('select title from role where department_id = 1', (err, result) => {
+        if (err) {
+            console.log(err);
+        }
+        for (let i = 0; i < result.length; i++) {
+            managers.push(result[i].title)
+        }
+    })
+    inquirer.prompt([
+        {
+            type: "Input",
+            message: "What is the new employee's fist name?",
+            name: 'employeeFirstName'
+        
+        },
+        {
+            type: "Input",
+            message: "What is the new employee's last name?",
+            name: 'employeeLastName'
+        },
+        {
+            type: "list",
+            message: "What is the new employee's role?",
+            choices: roles,
+            name: 'EmployeeRole'
+        },
+        {
+            type: "list",
+            message: "Who is the manager for the new employee?",
+            choices: managers,
+            name: 'employeeManager'
+        }
+    ]) 
+    .then(employeeAns => {
+        console.log(employeeAns);
+    })
+}
 
-
-// console.log(departmentList());
-
-// function addRole() {}
-
+employeeRoleandManager();

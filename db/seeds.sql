@@ -12,10 +12,10 @@ VALUES ("Operations Manager", 65000, 001),
         ("Belay Staff", 16.40, 003),
         ("Facility Maintenance", 16.40, 004),
         ('Climbing Instructor', 16.40, 005),
-        ('Head Route Setter', 50000, 006),
-        ("Route Setting Manager", 64000, 006),
-        ("Youth Programs Manager", 60000, 003),
-        ("Climbing and Fitness Manager", 50000, 005),
+        ('Head Route Setter', 50000, 001),
+        ("Route Setting Manager", 64000, 001),
+        ("Youth Programs Manager", 60000, 001),
+        ("Climbing and Fitness Manager", 50000, 001),
         ("Sales Manager", 65000, 001);
 
 
