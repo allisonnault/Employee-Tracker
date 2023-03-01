@@ -19,7 +19,7 @@ function init() {
     initialQ()
 }
 
-init()
+// init()
 
 function initialQ() {
     inquirer.prompt(initialQuestion)
@@ -45,6 +45,7 @@ function initialQ() {
                     break;
 
                 case "Add a Role":
+                    departmentList();
                     inquirer.prompt(addRoleQuestion)
                         // .then(roleAns => {
                         //     addRole(roleAns);
@@ -97,22 +98,34 @@ VALUES ('${answer.newDepartment}')`, (err)=> {
 })
 };
 
+function departmentList(){
+    let departments = [];
+    db.query('SELECT name from department', (err, result) => {
+        if (err) {
+            console.log(err);
+        }
+        for (let i = 0; i < result.length; i++) {
+        departments.push(result[i].name)
+        }
+        const list = JSON.stringify(departments)
+       fs.writeFile('./db/department_list.json', list, (err) =>
+       err
+        ? console.error(err)
+        :console.log(""))
+    })
+}
 
-// function deptChoices() {
+// function departmentList(){
 //     db.query('SELECT name from department', (err, result) => {
-//         let departments = [];
 //         if (err) {
 //             console.log(err);
 //         }
-//         for (let i = 0; i < result.length; i++) {
-//             let department = result[i].name;
-//             departments.push(department);
-//         }
-//         return departments;
+//        let departments = result;
+//        return departments;
 //     })
- 
 // }
 
+console.log(departmentList());
 
 // function addRole() {}
 

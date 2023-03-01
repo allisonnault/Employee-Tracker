@@ -1,3 +1,16 @@
+// const { mysql, db } = require('../index');
+const fs = require('fs');
+
+let departments = [];
+fs.readFile('./db/department_list.json', 'utf8', (err, data) => {
+    if (err) {
+        console.log(err);
+    } else {
+        departments.push(JSON.parse(data));
+    }
+});
+
+
 const addRoleQuestion = [
     {
         type: "Input",
@@ -12,9 +25,10 @@ const addRoleQuestion = [
     {
         type: "list",
         message: "Enter the department for this role",
-        choices: "departments",
+        choices: departments,
         name: 'newRole'
     }];
 
     module.exports = addRoleQuestion
+
 
