@@ -15,9 +15,9 @@ const db = mysql.createConnection(
 
 function init() {
     initialQ()
-}
+};
 
-// init()
+init()
 
 function initialQ() {
     inquirer.prompt(initialQuestion)
@@ -58,7 +58,7 @@ function initialQ() {
 
             } 
         })
-}
+};
 
 function viewDepartments() {
     db.query('SELECT * from department', (err, result) => {
@@ -68,7 +68,7 @@ function viewDepartments() {
         console.table(result);
         initialQ();
     })
-}
+};
 
 function viewEmployees() {
     db.query('SELECT * from employee', (err, result) => {
@@ -120,7 +120,7 @@ function addRole(answer) {
         })
     });
     
-}
+};
 
 function addEmployee(answer) {
     let roleID;
@@ -140,10 +140,7 @@ function addEmployee(answer) {
             initialQ();
         })
     })
-    
-    
-  
-}
+};
 
 function departmentChoice() {
     let departments = [];
@@ -178,7 +175,7 @@ function departmentChoice() {
             addRole(roleAns);
         })
     })
-}
+};
 
 function employeeRoleAndManager() {
     let roles = [];
@@ -228,7 +225,5 @@ function employeeRoleAndManager() {
         console.log(employeeAns);
         addEmployee(employeeAns);
     })
-}
+};
 
-
-employeeRoleAndManager()
