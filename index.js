@@ -70,7 +70,7 @@ function viewDepartments() {
 };
 
 function viewEmployees() {
-    db.query('SELECT employee.id AS ID, employee.first_name AS first_name, employee.last_name AS last_name, role.title AS job_title, role.salary AS salary, employee.manager_id AS manager_id, department.name AS department FROM employee JOIN role ON employee.role_id = role.id JOIN department ON role.department_id = department.id;', (err, result) => {
+    db.query('SELECT tbl1.id AS id, tbl1.first_name AS first_name, tbl1.last_name AS last_name, tbl1.salary AS salary, tbl1.job_title AS job_title, tbl1.department AS department, role.title AS manager from (SELECT employee.id AS ID, employee.first_name AS first_name, employee.last_name AS last_name, role.title AS job_title, role.salary AS salary, employee.manager_id AS manager, department.name AS department FROM employee JOIN role ON employee.role_id = role.id JOIN department ON role.department_id = department.id) AS tbl1 JOIN role ON tbl1.manager = role.id', (err, result) => {
         if (err) {
             console.log(err);
         }
