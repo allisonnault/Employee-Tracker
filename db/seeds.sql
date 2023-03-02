@@ -27,5 +27,6 @@ INSERT INTO employee (first_name, last_name, role_id, manager_id)
         ('Adam', 'Hanson', 4, 1);
 
 
-UPDATE employee SET role_id = 4
-WHERE first_name = 'Adam' AND last_name = 'Hanson';
+SELECT role.id AS ID, role.title AS job_title, department.name AS deptartment, role.salary AS salary FROM role JOIN department ON role.department_id = department.id;
+
+SELECT employee.id AS employee_ID, employee.first_name AS first_name, employee.last_name AS last_name, role.title AS job_title, role.salary AS salary, employee.manager_id AS manager_id, department.name AS department FROM employee JOIN role ON employee.role_id = role.id JOIN department ON role.department_id = department.id;
