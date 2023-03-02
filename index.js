@@ -18,7 +18,7 @@ function init() {
 };
 
 function initialQ() {
-    inquirer.prompt(initialQuestion)
+   return inquirer.prompt(initialQuestion)
         .then(ans => {
             switch (ans.options) {
                 case "View all departments":
@@ -97,7 +97,6 @@ VALUES ('${answer.newDepartment}')`, (err)=> {
     }
     console.log(`${answer.newDepartment} had been added`);
     viewDepartments();
-    initialQ();
 })
 };
 
@@ -115,7 +114,6 @@ function addRole(answer) {
             }
             console.log(`${answer.role} had been added to employee_db!`);
             viewRoles();
-            initialQ();
         })
     });
     
@@ -124,19 +122,19 @@ function addRole(answer) {
 function addEmployee(answer) {
     let roleID;
     let managerID;
-    db.query(`SELECT id from role where title in ('${answer.EmployeeRole}', '${answer.employeeManager}')`, (err, result)=>{
+    db.query(`SELECT id from role where title in ('${answer.EmployeeRole}', '${answer.employeeManager}')`, (err, result) => {
         if (err) {
             console.log(err);
         }
         roleID = result[0].id;
         managerID = result[1].id;
+        console.log(roleID + ' ' + managerID);
         db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ('${answer.employeeFirstName}', '${answer.employeeLastName}', ${roleID}, ${managerID})`, (err)=> {
             if (err) {
                 console.log(err);
             }
             console.log(`${answer.employeeFirstName} had been added`);
             viewEmployees();
-            initialQ();
         })
     })
 };
@@ -267,21 +265,22 @@ function updateEmployee(answer) {
     let name = answer.employee.split(' ');
     let firstName = name[0];
     let lastName = name[1];
-    db.query(`SELECT id FROM role WHERE title = "${answer.role}"`, (err, result) => {
+    db.query(`SELECT id FROM role WHERE title = "${answer.newRole}"`, (err, result) => {
         if (err) {
             console.log(err);
         }
-        newRoleID = result[0].id;
+        newRoleId = result[0].id;
         db.query(`UPDATE employee SET role_id = ${newRoleID}
         WHERE first_name = '${firstName}' AND last_name = '${lastName}'`, (err)=> {
             if (err) {
                 console.log(err);
             }
-            console.log(`${answer.name} has been updated!`);
+            console.log(`${answer.employee} has been updated!`);
             viewEmployees();
-            initialQ();
         })
     })
 }
 
-init();
+// init();
+
+addEmployeePrompt();
