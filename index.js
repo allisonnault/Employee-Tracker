@@ -269,7 +269,7 @@ function updateEmployee(answer) {
         if (err) {
             console.log(err);
         }
-        newRoleId = result[0].id;
+        newRoleID = result[0].id;
         db.query(`UPDATE employee SET role_id = ${newRoleID}
         WHERE first_name = '${firstName}' AND last_name = '${lastName}'`, (err)=> {
             if (err) {
@@ -281,6 +281,5 @@ function updateEmployee(answer) {
     })
 }
 
-// init();
+init();
 
-addEmployeePrompt();
